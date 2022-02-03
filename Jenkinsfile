@@ -37,13 +37,4 @@ pipeline{
             }
         }
    }
-    post{
-            always{
-                mail from: 'madanalaanand7@gmail.com',
-                to : 'anand@gmail.com',
-                subject: "status of the pipeline ${currentBuild.fullDisplayName}",
-                body: "${env.BUILD_URL} has a result ${currentBuild.result}"
-
-            }
-        }
 }
