@@ -12,12 +12,13 @@ pipeline{
          }
       }
    }
-   post{
-      always{
-         mail to: 'madanalaanand7@gmail.com',
-         from: 'team@gmail.com',
-         subject: "status of the pipeline ${currentBuild.fullDisplayName}",
-         body: "${env.BUILD_URL}" has "${currentBuild.result}"
-      }
-   }
+    post{
+            always{
+                mail from: 'madanalaanand7@gmail.com',
+                to : 'anand@gmail.com',
+                subject: "status of the pipeline ${currentBuild.fullDisplayName}",
+                body: "${env.BUILD_URL} has a result ${currentBuild.result}"
+
+            }
+        }
 }
