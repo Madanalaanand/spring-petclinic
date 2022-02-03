@@ -3,12 +3,12 @@ pipeline{
    stages{
       stage('scm'){
          steps{
-            git 'https://github.com/Madanalaanand/spring-petclinic.git', branch: "main"
+            git "https://github.com/Madanalaanand/spring-petclinic.git", branch: "main"
          }
       }
       stage('build'){
          steps{
-            sh '/usr/local/apache-maven3.8.4/bin/mvn clean package'
+            sh "/usr/local/apache-maven3.8.4/bin/mvn clean package"
          }
       }
    }
