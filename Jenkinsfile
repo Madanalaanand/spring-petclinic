@@ -1,8 +1,24 @@
-node('jdk11-mvn3.8.4') {
-    stage('git') {
-       git branch: 'main', url: 'https://github.com/Madanalaanand/spring-petclinic.git'
-  }
-    stage('build') {
-       sh 'mvn clean package'
-}
+pipeline{
+   agject('jdk11-maven3.8.4'){
+      stages{
+         stage{
+            steps('scm'){
+              git 'https://github.com/Madanalaanand/spring-petclinic.git'
+            }
+         }
+         stage{
+            steps('build'){
+               sh '/usr/local/apache-maven-3.8.4/bin/mvn clean package'
+            }
+         }
+      }
+   }
+   post{
+      always{
+         mail to: 'madanalaanand7@gmail.com',
+         from: 'team@gmail.com',
+         subject: "status of the pipeline.${currentBuild.fullDisplayName}",
+         body: "${env.Build_URL} is ${currentBuild.result}"
+      }
+   }
 }
