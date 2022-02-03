@@ -8,8 +8,13 @@ pipeline{
       }
       stage('build'){
          steps{
-                sh '/usr/local/apache-maven-3.8.4/bin/mvn clean package'
-                } 
+                    withSonarQubeEnv(installationName: 'SONAR_9.3', envOnly: true, credentialsId: 'SONAR_TOKEN') {
+                    sh "/usr/local/apache-maven-3.8.4/bin/mvn clean package sonar:sonar"
+					     echo "${env.SONAR_HOST_URL}"
+                    timeout(time: 1, unit: 'HOURS') {
+                        waitForQualityGate abortPipeline: true, credentialsId: 'SONAR_TOKEN'
+                    }
+                }                } 
             }
       }
    }
