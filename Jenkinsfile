@@ -1,8 +1,5 @@
 pipeline{
    agent{label 'jdk11-mvn3.8.4'}
-   tools {
-		maven 'MVN_3.8.4'
-	}
    stages{
       stage('scm'){
          steps{
