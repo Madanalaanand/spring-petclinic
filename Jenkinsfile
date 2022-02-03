@@ -1,5 +1,5 @@
 pipeline{
-   agject('jdk11-maven3.8.4'){
+   agent('jdk11-maven3.8.4'){
       stages{
          stage{
             steps('scm'){
