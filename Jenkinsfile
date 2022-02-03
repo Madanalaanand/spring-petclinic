@@ -6,7 +6,7 @@ pipeline{
    stages{
       stage('scm'){
          steps{
-            git url: "https://github.com/Madanalaanand/spring-petclinic.git", branch: "main"
+            git url: "https://github.com/Madanalaanand/spring-petclinic.git", branch: "jfrog"
          }
       }
       stage ('Artifactory configuration') {
