@@ -11,7 +11,7 @@ pipeline {
         stage('scm') {
             steps {
                
-                git url: 'https://github.com/GitPracticeRepo/spring-petclinic.git', branch: 'main'
+                git url: 'https://github.com/Madanalaanand/spring-petclinic.git', branch: 'main'
             }
         }
         stage('build') {
