@@ -18,8 +18,8 @@ pipeline {
                 rtMavenDeployer (
                     id: "MAVEN_DEPLOYER",
                     serverId: 'JFROG-OSS',
-                    releaseRepo: 'local-relesaes',
-                    snapshotRepo: 'local-snapshort'
+                    releaseRepo: 'maven-releases',
+                    snapshotRepo: 'maven-snapshots'
                 )
                 
             }
