@@ -1,40 +1,34 @@
-pipeline{
-   agent{label 'jdk11-mvn3.8.4'}
-   tools {
+pipeline {
+    agent { label 'jdk11-mvn3.8.4' }
+    triggers { 
+        cron('45 23 * * 1-5')
+        pollSCM('*/5 * * * *')
+    }
+	tools {
 		maven 'MVN_3.8.4'
 	}
-   stages{
-      stage('scm'){
-         steps{
-            git url: "https://github.com/Madanalaanand/spring-petclinic.git", branch: "jfrog"
-         }
-      }
-      stage ('Artifactory configuration') {
+    stages {
+        stage('scm') {
             steps {
-                rtMavenDeployer (
-                    id: "MAVEN_DEPLOYER",
-                    serverId: "JFROG-OSS",
-                    releaseRepo: local-relesaes,
-                    snapshotRepo: local-snapshort
-                )
+               
+                git url: 'https://github.com/GitPracticeRepo/spring-petclinic.git', branch: 'main'
             }
         }
-         stage ('Exec Maven') {
+        stage('build') {
             steps {
-                rtMavenRun (
-                    tool: 'MVN_3.8.4', // Tool name from Jenkins configuration
-                    pom: 'pom.xml',
-                    goals: 'clean install',
-                    deployerId: "MAVEN_DEPLOYER"
-                )
+                withSonarQubeEnv(installationName: 'SONAR_9.3') {
+                    sh "mvn clean package sonar:sonar"                                  
+                }
             }
         }
-        stage ('Publish build info') {
+		stage("Quality Gate") {
             steps {
-                rtPublishBuildInfo (
-                    serverId: "JFROG-OSS"
-                )
+                timeout(time: 1, unit: 'HOURS') {
+                    // Parameter indicates whether to set pipeline to UNSTABLE if Quality Gate fails
+                    // true = set pipeline to UNSTABLE, false = don't
+                    waitForQualityGate abortPipeline: true
+                }
             }
         }
-   }
+    }
 }
